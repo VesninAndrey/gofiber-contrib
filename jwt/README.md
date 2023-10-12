@@ -1,5 +1,5 @@
 ---
-id: jwt
+id: jwtware
 ---
 
 # JWT
@@ -24,7 +24,7 @@ Special thanks and credits to [Echo](https://echo.labstack.com/middleware/jwt)
 This middleware supports Fiber v1 & v2, install accordingly.
 
 ```
-go get -u github.com/gofiber/fiber/v2
+go get -u github.com/gofiber/fiber/v3
 go get -u github.com/gofiber/contrib/jwt
 go get -u github.com/golang-jwt/jwt/v5
 ```
@@ -58,7 +58,7 @@ package main
 import (
 	"time"
 
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 
 	jwtware "github.com/gofiber/contrib/jwt"
 	"github.com/golang-jwt/jwt/v5"
@@ -84,7 +84,7 @@ func main() {
 	app.Listen(":3000")
 }
 
-func login(c *fiber.Ctx) error {
+func login(c fiber.Ctx) error {
 	user := c.FormValue("user")
 	pass := c.FormValue("pass")
 
@@ -112,11 +112,11 @@ func login(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{"token": t})
 }
 
-func accessible(c *fiber.Ctx) error {
+func accessible(c fiber.Ctx) error {
 	return c.SendString("Accessible")
 }
 
-func restricted(c *fiber.Ctx) error {
+func restricted(c fiber.Ctx) error {
 	user := c.Locals("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
 	name := claims["name"].(string)
@@ -157,7 +157,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 
 	"github.com/golang-jwt/jwt/v5"
 
@@ -266,7 +266,7 @@ package main
 
 import (
 	"fmt"
-  "github.com/gofiber/fiber/v2"
+  "github.com/gofiber/fiber/v3"
 
   jwtware "github.com/gofiber/contrib/jwt"
   "github.com/golang-jwt/jwt/v5"
@@ -288,7 +288,7 @@ func customKeyFunc() jwt.Keyfunc {
 	return func(t *jwt.Token) (interface{}, error) {
 		// Always check the signing method
 		if t.Method.Alg() != jwtware.HS256 {
-			return nil, fmt.Errorf("Unexpected jwt signing method=%v", t.Header["alg"])
+			return nil, fmt.Errorf("Unexpected jwtware signing method=%v", t.Header["alg"])
 		}
 
 		// TODO custom implementation of loading signing key like from a database

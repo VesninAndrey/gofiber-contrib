@@ -1,14 +1,9 @@
-// 🚀 Fiber is an Express inspired web framework written in Go with 💖
-// 📌 API Documentation: https://fiber.wiki
-// 📝 Github Repository: https://github.com/gofiber/fiber
-// Special thanks to Echo: https://github.com/labstack/echo/blob/master/middleware/jwt.go
-
 package jwtware
 
 import (
 	"reflect"
 
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v3"
 	"github.com/golang-jwt/jwt/v5"
 )
 
@@ -23,7 +18,7 @@ func New(config ...Config) fiber.Handler {
 	extractors := cfg.getExtractors()
 
 	// Return middleware handler
-	return func(c *fiber.Ctx) error {
+	return func(c fiber.Ctx) error {
 		// Filter request to skip middleware
 		if cfg.Filter != nil && cfg.Filter(c) {
 			return c.Next()
